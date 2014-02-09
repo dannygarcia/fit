@@ -5,24 +5,18 @@
  * https://github.com/dannygarcia/fit/
  */
 
-
 'use strict';
-
-/*
-*
-* Options
-*
-* context	[str]		-	Context type.
-* parent	[dom]		-	<canvas> parent.
-* width		[num/str]	-	Canvas width. 'auto' fits to parent.
-* height	[num/str]	-	Canvas height. 'auto' fits to parent.
-* resize	[bool]		-	Should the canvas width/height be reset
-*							when the window is resized?
-*/
 
 /**
  * Canvas Constructor
- * @param {Object} userOptions
+ * @param {Object} userOptions {
+ *   {String} contextType '2d' or '3d'
+ *   {Object} parent DOM Node
+ *   {String||Number} width A 'auto' or number value of initial width.
+ *   {String||Number} height A 'auto' or number value of initial height.
+ *   {Boolean} resize Should it resize when the window resizes?
+ *   {Number} ratio Device pixel ratio.
+ * }
  * @return {Function} Canvas instance.
  */
 var Canvas = function (userOptions) {
@@ -46,12 +40,12 @@ var Canvas = function (userOptions) {
 	}
 
 	this._canvas = this.options.parent.appendChild(document.createElement('canvas'));
-	this._context = this._canvas.getContext(this.options.context);
+	this._context = this.getContext(this.options.contextType);
 
-	this.resize(null, this.options.width, this.options.height);
+	this.resize(this.options.width, this.options.height);
 
 	if (this.options.resize) {
-		window.addEventListener('resize', this.resize, false);
+		window.addEventListener('resize', this.resize.bind(this), false);
 	}
 
 	return this;
@@ -65,17 +59,23 @@ Canvas.prototype = {
 	 * @return {Object} Canvas context.
 	 */
 	getContext : function () {
-		return this._context || this._canvas.getthis._Context(this.options.contextType);
+		return this._context || this._canvas.getContext(this.options.contextType);
 	},
 
 	/**
 	 * Resize canvas element.
-	 * @param  {Object} e HTML event.
+	 * @param  {Object} e (optional) HTML event.
 	 * @param  {Number} width Desired width.
 	 * @param  {Number} height Desired height.
 	 * @return {Object} This.
 	 */
 	resize : function (e, width, height) {
+
+		// Makes e optional.
+		if (!e) {
+			height = width;
+			width = e;
+		}
 
 		// Determine the appropriate width.
 		if (typeof width === 'undefined' || width === 'auto') {
@@ -121,7 +121,7 @@ Canvas.prototype = {
 
 		// Unbind resize.
 		if (this.options.resize) {
-			window.removeEventListener('resize', this.options.resize, false);
+			window.removeEventListener('resize', this.resize.bind(this), false);
 		}
 
 		// Remove canvas node.
