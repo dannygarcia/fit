@@ -10,7 +10,7 @@ Currently in development, like, not even alpha.
 
 Port FIL components to FIT:
 
-- [*] Canvas
+- [x] Canvas
 - [ ] Input
 - [ ] Pen
 - [ ] Frame
