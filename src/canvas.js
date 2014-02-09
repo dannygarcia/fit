@@ -72,7 +72,7 @@ Canvas.prototype = {
 	resize : function (e, width, height) {
 
 		// Makes e optional.
-		if (!e) {
+		if (!height && typeof e === 'number' && typeof width === 'number') {
 			height = width;
 			width = e;
 		}
@@ -96,8 +96,8 @@ Canvas.prototype = {
 
 
 		// Set the actual canvas width and height.
-		this._canvas.style.width = width / this.options.ratio;
-		this._canvas.style.height = height / this.options.ratio;
+		this._canvas.style.width = (width / this.options.ratio) + 'px';
+		this._canvas.style.height = (height / this.options.ratio) + 'px';
 
 		return this;
 

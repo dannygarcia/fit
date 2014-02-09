@@ -13,7 +13,8 @@ module.exports = function (grunt) {
 			all: [
 				'Gruntfile.js',
 				'index.js',
-				'src/*.js'
+				'src/*.js',
+				'test/*.js'
 			]
 		},
 
@@ -45,7 +46,7 @@ module.exports = function (grunt) {
 
 		watch: {
 			all: {
-				files: ['./*.js', 'src/*.js'],
+				files: ['./*.js', 'src/*.js', 'test/*.js'],
 				tasks: ['default']
 			}
 		}
