@@ -10,20 +10,20 @@ Currently in development, like, not even alpha.
 
 Port FIL components to FIT:
 
- - [*] Canvas
- - [ ] Input
- - [ ] Pen
- - [ ] Frame
- - [ ] Transformer
+- [*] Canvas
+- [ ] Input
+- [ ] Pen
+- [ ] Frame
+- [ ] Transformer
 
 Support:
 
- - [ ] Provide proper exports (AMD, Node, etc.)
- - [ ] Automate Documentation
- - [ ] Write qUnit Tests
- - [ ] Provide use examples.
+- [ ] Provide proper exports (AMD, Node, etc.)
+- [ ] Automate Documentation
+- [ ] Write qUnit Tests
+- [ ] Provide use examples.
 
 Future:
- - [ ] Publish on NPM, Bower, etc.
- - [ ] ????
- - [ ] Profit!
+- [ ] Publish on NPM, Bower, etc.
+- [ ] ????
+- [ ] Profit!
