@@ -27,7 +27,7 @@
  */
 var Canvas = function (userOptions) {
 
-	var defaultOptions = {
+	this._defaultOptions = {
 		contextType: '2d',
 		parent: document.body,
 		width: 'auto',
@@ -37,14 +37,16 @@ var Canvas = function (userOptions) {
 	};
 
 	this.options = {};
-	for (var option in defaultOptions) {
-		if (defaultOptions.hasOwnProperty(option)) {
-			this.options[option] = userOptions[option] || defaultOptions[option];
+	userOptions = userOptions || {};
+
+	for (var option in this._defaultOptions) {
+		if (this._defaultOptions.hasOwnProperty(option)) {
+			this.options[option] = userOptions[option] || this._defaultOptions[option];
 		}
 	}
 
-	var canvas = this.options.parent.appendChild(document.createElement('canvas'));
-	var context = canvas.getContext(this.options.context);
+	this._canvas = this.options.parent.appendChild(document.createElement('canvas'));
+	this._context = this._canvas.getContext(this.options.context);
 
 	this.resize(null, this.options.width, this.options.height);
 
@@ -52,97 +54,89 @@ var Canvas = function (userOptions) {
 		window.addEventListener('resize', this.resize, false);
 	}
 
-	return {
-
-		/**
-		 * Get Context
-		 * @return {Object} Canvas context.
-		 */
-		getContext : function () {
-			return context || canvas.getContext(this.options.contextType);
-		},
-
-		/**
-		 * Resize canvas element.
-		 * @param  {Object} e HTML event.
-		 * @param  {Number} width Desired width.
-		 * @param  {Number} height Desired height.
-		 * @return {Object} This.
-		 */
-		resize : function (e, width, height) {
-
-			// Determine the appropriate width.
-			if (typeof width === 'undefined' || width === 'auto') {
-				width = this.options.parent.offsetWidth;
-			}
-
-			// Determine the appropriate height.
-			if (typeof height === 'undefined' || height === 'auto') {
-				height = this.options.parent.offsetHeight;
-			}
-
-			width *= this.options.ratio;
-			height *= this.options.ratio;
-
-			// Set the appropriate canvas resolution.
-			this.width = context.canvas.width = width;
-			this.height = context.canvas.height = height;
-
-			// Set the actual canvas width and height.
-			canvas.style.width = width / this.options.ratio;
-			canvas.style.height = height / this.options.ratio;
-
-			return this;
-
-		},
-
-
-		/**
-		 * Clears the canvas.
-		 * @return {Object} This.
-		 */
-		clear : function () {
-			context.clearRect(0, 0, this.width, this.height);
-			return this;
-		},
-
-		/**
-		 * Resets options, removes canvas element, resize events and context. Works as a cleanup after something like a transition out.
-		 * @return {Object} This.
-		 */
-		destroy : function () {
-
-			// Unbind resize.
-			if (this.options.resize) {
-				window.removeEventListener('resize', this.options.resize, false);
-			}
-
-			// Remove canvas node.
-			if (canvas) {
-				this.options.parent.removeChild(canvas);
-			}
-
-			// Reset variables.
-			this.options = defaultOptions;
-			canvas = null;
-			context = null;
-
-			return this;
-
-		}
-	};
+	return this;
 
 };
 
+Canvas.prototype = {
+
+	/**
+	 * Get Context
+	 * @return {Object} Canvas context.
+	 */
+	getContext : function () {
+		return this._context || this._canvas.getthis._Context(this.options.contextType);
+	},
+
+	/**
+	 * Resize canvas element.
+	 * @param  {Object} e HTML event.
+	 * @param  {Number} width Desired width.
+	 * @param  {Number} height Desired height.
+	 * @return {Object} This.
+	 */
+	resize : function (e, width, height) {
+
+		// Determine the appropriate width.
+		if (typeof width === 'undefined' || width === 'auto') {
+			width = this.options.parent.offsetWidth;
+		}
+
+		// Determine the appropriate height.
+		if (typeof height === 'undefined' || height === 'auto') {
+			height = this.options.parent.offsetHeight;
+		}
+
+		width *= this.options.ratio;
+		height *= this.options.ratio;
+
+		// Set the appropriate canvas resolution.
+		this.width = this._canvas.width = width;
+		this.height = this._canvas.height = height;
+
+
+		// Set the actual canvas width and height.
+		this._canvas.style.width = width / this.options.ratio;
+		this._canvas.style.height = height / this.options.ratio;
+
+		return this;
+
+	},
+
+
+	/**
+	 * Clears the canvas.
+	 * @return {Object} This.
+	 */
+	clear : function () {
+		this._context.clearRect(0, 0, this.width, this.height);
+		return this;
+	},
+
+	/**
+	 * Resets options, removes canvas element, resize events and context. Works as a cleanup after something like a transition out.
+	 * @return {Object} This.
+	 */
+	destroy : function () {
+
+		// Unbind resize.
+		if (this.options.resize) {
+			window.removeEventListener('resize', this.options.resize, false);
+		}
+
+		// Remove canvas node.
+		if (this._canvas) {
+			this.options.parent.removeChild(this._canvas);
+		}
+
+		// Reset variables.
+		this.options = this._defaultOptions;
+		this._canvas = null;
+		this._context = null;
+
+		return this;
+
+	}
+};
+
 module.exports = Canvas;
-
-/*
-// Look for AMD
-if (typeof this.define === 'function' && this.define.amd) {
-
-	this.define('Canvas', [], function () {
-		return fil.Canvas;
-	});
-
-}
-*/

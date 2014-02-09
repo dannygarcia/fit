@@ -31,7 +31,7 @@ module.exports = function (grunt) {
 					'build/fit.js': ['index.js', 'src/*.js']
 				},
 				options: {
-					debug: true
+					debug: false
 				}
 			}
 		},
@@ -41,14 +41,14 @@ module.exports = function (grunt) {
 				src: 'build/fit.js',
 				dest: 'build/fit.min.js'
 			}
-		}/*,
+		},
 
 		watch: {
 			all: {
-				files: ['./index.*', 'src/*.js'],
+				files: ['./*.js', 'src/*.js'],
 				tasks: ['default']
 			}
-		}*/
+		}
 
 	});
 
