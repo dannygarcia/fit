@@ -15,6 +15,13 @@
 	<script src="//code.jquery.com/qunit/qunit-1.14.0.js"></script>
 	<script src="../build/fit.js"></script>
 
+	<script>
+		'use strict';
+		module('FIT');
+		test('FIT.Canvas', function () {
+			ok(typeof FIT.Canvas === 'function');
+		});
+	</script>
 	<script src="./test.canvas.js"></script>
 
 </body>

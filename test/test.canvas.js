@@ -7,11 +7,6 @@
 
 'use strict';
 
-module('FIT');
-test('FIT.Canvas', function () {
-	ok(typeof FIT.Canvas === 'function');
-});
-
 (function () {
 	var canvas;
 	module('Canvas', {
