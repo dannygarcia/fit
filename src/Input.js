@@ -27,7 +27,8 @@ var Input = new AbstractClass(function (userOptions) {
 		preventDefault: false,
 		ratio: window.devicePixelRatio || 1,
 		forceTouch: false,
-		type: 'object'
+		type: 'object',
+		autoBindInputs: true
 	}, userOptions);
 
 	this._ratio = 1;
@@ -37,12 +38,42 @@ var Input = new AbstractClass(function (userOptions) {
 	this.inputs = [];
 	this.average = {};
 
-	this.bindAllInputs();
+	if (this.options.autoBindInputs) {
+		this.bindAllInputs();
+	}
 
 	return this;
 
 });
 
+Input.prototype._makeCoordinate = function (x, y) {
+	return (this.options.type === 'object') ? {x : x, y: y } : [x, y];
+};
+
+Input.prototype._getX = function (from) {
+	return (this.options.type === 'object') ? from.x : from[0];
+};
+
+Input.prototype._getY = function (from) {
+	return (this.options.type === 'object') ? from.y : from[1];
+};
+
+Input.prototype._incrementCoordinate = function (c, by) {
+	if (this.options.type === 'object') {
+		c.x += by.x;
+		c.y += by.y;
+	} else {
+		c[0] += by[0];
+		c[1] += by[1];
+	}
+	return c;
+};
+
+/**
+ * Primary method that sets coordinates by a given mouse or touch event.
+ * @param {Object} e HTML event.
+ * @return {Object} This.
+ */
 Input.prototype.setCoordinates = function (e) {
 
 	if (this.options.preventDefault) {
@@ -50,34 +81,20 @@ Input.prototype.setCoordinates = function (e) {
 	}
 
 	var c = [],
-		sum = (this.options.type === 'object') ? { x : 0, y : 0 } : [0, 0];
+		sum = this._makeCoordinate(0, 0);
 
 	if (this._touch) {
 
 		// For each touch input, generate its coordinates.
 		for (var i = 0; i < e.touches.length; i++) {
-			c[i] = (this.options.type === 'object') ? {
-				x : e.touches[i].pageX * this._ratio,
-				y : e.touches[i].pageY * this._ratio
-			} : [e.touches[i].pageX * this._ratio, e.touches[i].pageY * this._ratio];
-			// sum+=c[i];
-			if (this.options.type === 'object') {
-				sum.x += c[i].x;
-				sum.y += c[i].y;
-			} else {
-				sum[0] += c[i][0];
-				sum[1] += c[i][1];
-			}
+			c[i] = this._makeCoordinate(e.touches[i].pageX * this._ratio, e.touches[i].pageY * this._ratio);
+			sum = this._incrementCoordinate(sum, c[i]);
 		}
 
 	} else {
 
 		// Regular Mouse Event Coordinates
-		c[0] = (this.options.type === 'object') ? {
-			x : e.pageX * this._ratio,
-			y : e.pageY * this._ratio
-		} : [e.pageX * this._ratio, e.pageY * this._ratio];
-
+		c[0] = this._makeCoordinate(e.pageX * this._ratio, e.pageY * this._ratio);
 		sum = c[0];
 
 	}
@@ -86,10 +103,12 @@ Input.prototype.setCoordinates = function (e) {
 	this.inputs = c;
 
 	// Update the average value.
-	this.average = (this.options.type === 'object') ? {
-		x : Math.ceil(sum.x / c.length),
-		y : Math.ceil(sum.y / c.length)
-	} : [Math.ceil(sum[0] / c.length), Math.ceil(sum[1] / c.length)];
+	this.average = this._makeCoordinate(
+		Math.ceil(this._getX(sum) / c.length),
+		Math.ceil(this._getY(sum) / c.length)
+	);
+
+	return this;
 
 };
 
@@ -163,7 +182,7 @@ Input.prototype.unbindTapMove = function () {
 
 
 /* ============================
-* Tap / Click Down
+* Tap / Click Up
 * ========================== */
 
 Input.prototype.bindTapEnd = function () {
@@ -220,6 +239,8 @@ Input.prototype.supportsTouch = function () {
 Input.prototype.destroy = function () {
 
 	this.unbindAllInputs();
+
+	return this;
 
 };
 

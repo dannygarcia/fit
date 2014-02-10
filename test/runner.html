@@ -18,11 +18,14 @@
 	<script>
 		'use strict';
 		module('FIT');
-		test('FIT.Canvas', function () {
-			ok(typeof FIT.Canvas === 'function');
+		test('FIT Object', function () {
+			ok(typeof FIT.Canvas === 'function', 'Canvas');
+			ok(typeof FIT.Input === 'function', 'Input');
 		});
 	</script>
+
 	<script src="./test.canvas.js"></script>
+	<script src="./test.input.js"></script>
 
 </body>
 </html>
