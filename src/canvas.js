@@ -1,5 +1,5 @@
 /*
- * canvas.js – Part of FIT (Front-end Interactive Toolkit)
+ * Canvas.js – Part of FIT (Front-end Interactive Toolkit)
  * Copyright (c) 2014, Danny Garcia. All rights reserved.
  * Code licensed under the MIT License
  * https://github.com/dannygarcia/fit/

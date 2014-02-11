@@ -2,5 +2,6 @@
 
 global.FIT = module.exports = {
 	Canvas: require('./src/Canvas'),
-	Input: require('./src/Input')
+	Input: require('./src/Input'),
+	Pen: require('./src/Pen')
 };

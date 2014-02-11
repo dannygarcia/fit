@@ -11,8 +11,8 @@ Currently in development, like, not even alpha.
 Port FIL components to FIT:
 
 - [x] Canvas
-- [ ] Input
-- [ ] Pen
+- [x] Input
+- [x] Pen
 - [ ] Frame
 - [ ] Transformer
 
