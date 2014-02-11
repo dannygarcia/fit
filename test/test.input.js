@@ -93,12 +93,7 @@
 		ok(!input._bound, 'binds input');
 	});
 	test('.destroy', function () {
-		// var parent = canvas.options.parent;
-		// ok(parent.childNodes.length === 1, 'one canvas element before destroy');
 		ok(input.destroy(), 'destroys');
-		// ok(parent.childNodes.length === 0, 'no canvas element after destroy');
-		// ok(canvas.options === canvas._defaultOptions, 'resets to default options');
-		// ok(!canvas._canvas, 'nullifies canvas element');
-		// ok(!canvas._context, 'nullifies canvas context');
+		ok(input.options === input._defaultOptions, 'resets to default options');
 	});
 }(window));
