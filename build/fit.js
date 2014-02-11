@@ -210,6 +210,12 @@ var Input = new AbstractClass(function (userOptions) {
 	this.inputs = [];
 	this.average = {};
 
+	this.events = {
+		tapStart: this.getEventType('start'),
+		tapMove: this.getEventType('move'),
+		tapEnd: this.getEventType('end')
+	};
+
 	if (this.options.autoBindInputs) {
 		this.bindAllInputs();
 	}
@@ -218,18 +224,40 @@ var Input = new AbstractClass(function (userOptions) {
 
 });
 
+/**
+ * Builds a coordinate.
+ * @param  {Number} x X coordinate.
+ * @param  {Number} y Y coordinate.
+ * @return {Object||Array} Object or Array depending on options.type setting.
+ */
 Input.prototype._makeCoordinate = function (x, y) {
 	return (this.options.type === 'object') ? {x : x, y: y } : [x, y];
 };
 
+/**
+ * Gets X coordinate from a given coordinate.
+ * @param  {Object||Array} from From coordinate.
+ * @return {Number} X value.
+ */
 Input.prototype._getX = function (from) {
 	return (this.options.type === 'object') ? from.x : from[0];
 };
 
+/**
+ * Gets Y coordinate from a given coordinate.
+ * @param  {Object||Array} from From coordinate.
+ * @return {Number} Y value.
+ */
 Input.prototype._getY = function (from) {
 	return (this.options.type === 'object') ? from.y : from[1];
 };
 
+/**
+ * Increments a given coordinate by a given value.
+ * @param  {Object||Array} c  Coordinate.
+ * @param  {Object||Array} by Incrementor.
+ * @return {Object||Array} Incremented coordinate.
+ */
 Input.prototype._incrementCoordinate = function (c, by) {
 	if (this.options.type === 'object') {
 		c.x += by.x;
@@ -284,100 +312,87 @@ Input.prototype.setCoordinates = function (e) {
 
 };
 
-
-// NOTE: This can / should be optimized somehow so
-// that only one method is called instead of three.
-// They are called separately so we can pass the
-// specific type to this.setCoordinates() easily.
+/**
+ * Binds all inputs in this.events.
+ */
 Input.prototype.bindAllInputs = function () {
+
 	this._bound = true;
-	this.bindTapStart();
-	this.bindTapMove();
-	this.bindTapEnd();
+
+	for (var e in this.events) {
+		if (this.events.hasOwnProperty(e)) {
+			this.options.element.addEventListener(this.events[e], this[e].bind(this), false);
+		}
+	}
 };
 
-
+/**
+ * Unbinds all input events.
+ */
 Input.prototype.unbindAllInputs = function () {
-	if (this._bound) {
-		this.unbindTapStart();
-		this.unbindTapMove();
-		this.unbindTapEnd();
+
+	for (var e in this.events) {
+		if (this.events.hasOwnProperty(e)) {
+			this.options.element.removeEventListener(this.events[e], this[e].bind(this), false);
+		}
 	}
+
 	this._bound = false;
 };
 
-
-/* ============================
-* Tap / Click Down
-* ========================== */
-
-Input.prototype.bindTapStart = function () {
-	var event = this.getEventType('start');
-	this.options.element.addEventListener(event, this.tapStart.bind(this), false);
-};
-
+/**
+ * Fired by tap start event.
+ * @param  {Object} e HTML DOM event.
+ */
 Input.prototype.tapStart = function (e) {
 	this.setCoordinates(e, 'start');
 	this.ontapstart(this.average, this.inputs);
 };
 
-// This is the hook for the fired event.
+/**
+ * Tap Start Hook
+ * @param {Number} average Averaged inputs.
+ * @param {Array} inputs Array of all inputs.
+ */
 Input.prototype.ontapstart = function (/** average, inputs **/) {};
 
-Input.prototype.unbindTapStart = function () {
-	var event = this.getEventType('start');
-	this.options.element.removeEventListener(event, this.tapStart.bind(this), false);
-};
-
-
-/* ============================
-* Tap / Click Move Over
-* ========================== */
-
-Input.prototype.bindTapMove = function () {
-	var event = this.getEventType('move');
-	this.options.element.addEventListener(event, this.tapMove.bind(this), false);
-};
-
+/**
+ * Fired by tap move event.
+ * @param  {Object} e HTML DOM event.
+ */
 Input.prototype.tapMove = function (e) {
 	this.setCoordinates(e, 'move');
 	this.ontapmove(this.average, this.inputs);
 };
 
-// This is the hook for the fired event.
+/**
+ * Tap Move Hook
+ * @param {Number} average Averaged inputs.
+ * @param {Array} inputs Array of all inputs.
+ */
 Input.prototype.ontapmove = function (/** average, inputs **/) {};
 
-Input.prototype.unbindTapMove = function () {
-	var event = this.getEventType('move');
-	this.options.element.removeEventListener(event, this.tapMove.bind(this), false);
-};
-
-
-/* ============================
-* Tap / Click Up
-* ========================== */
-
-Input.prototype.bindTapEnd = function () {
-	var event = this.getEventType('end');
-	this.options.element.addEventListener(event, this.tapEnd.bind(this), false);
-};
-
+/**
+ * Fired by tap end event.
+ * @param  {Object} e HTML DOM event.
+ */
 Input.prototype.tapEnd = function (e) {
 	this.setCoordinates(e, 'end');
 	this.ontapend(this.average, this.inputs);
 };
 
-// This is the hook for the fired event.
+/**
+ * Tap End Hook
+ * @param {Number} average Averaged inputs.
+ * @param {Array} inputs Array of all inputs.
+ */
 Input.prototype.ontapend = function (/** average, inputs **/) {};
 
-Input.prototype.unbindTapEnd = function () {
-	var event = this.getEventType('end');
-	this.options.element.removeEventListener(event, this.tapEnd.bind(this), false);
-};
-
-
-// Returns the appropriate event type
-// based on whether or not it supports touch.
+/**
+ * Returns the appropriate event type for input.
+ * @param  {String} type Type to get.
+ * @return {String} Event type.
+ */
 Input.prototype.getEventType = function (type) {
 
 	var prefix = this._touch ? 'touch' : 'mouse';
@@ -394,8 +409,10 @@ Input.prototype.getEventType = function (type) {
 
 };
 
-
-// Test for touch support.
+/**
+ * Tests touch support.
+ * @return {Boolean} Does the device support touch?
+ */
 Input.prototype.supportsTouch = function () {
 
 	// This is a quick and simple test as borrowed from Modernizr.
@@ -405,13 +422,14 @@ Input.prototype.supportsTouch = function () {
 
 };
 
-
-// Essentially resets everything
-// to the state before this.init().
+/**
+ * Resets options and unbinds inputs.
+ * @return {Object} This.
+ */
 Input.prototype.destroy = function () {
 
 	this.unbindAllInputs();
-
+	this.options = this._defaultOptions;
 	return this;
 
 };

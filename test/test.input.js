@@ -84,6 +84,14 @@
 		ok(input.average.y === (y + y * 2) / 2, 'average y');
 		input._touch = false;
 	});
+	test('.bindAllInputs', function () {
+		input.bindAllInputs();
+		ok(input._bound, 'binds input');
+	});
+	test('.unbindAllInputs', function () {
+		input.unbindAllInputs();
+		ok(!input._bound, 'binds input');
+	});
 	test('.destroy', function () {
 		// var parent = canvas.options.parent;
 		// ok(parent.childNodes.length === 1, 'one canvas element before destroy');
