@@ -10,14 +10,16 @@
 var AbstractClass = require('./AbstractClass');
 
 /**
- * Input Constructor
+ * Pen Constructor
  * @param {Object} userOptions {
  * }
- * @return {Function} Input instance.
+ * @return {Function} Pen instance.
  */
-var Input = new AbstractClass(function (userOptions) {
+var Pen = new AbstractClass(function (userOptions) {
 
-	this._setOptions({}, userOptions);
+	this._setOptions({
+		ctx: null
+	}, userOptions);
 
 	this.ctx = this.options.ctx;
 
@@ -30,7 +32,7 @@ var Input = new AbstractClass(function (userOptions) {
  * @param  {Object} context Canvas context.
  * @return {Object} Canvas context.
  */
-Input.prototype.context = function (context) {
+Pen.prototype.context = function (context) {
 
 	if (typeof context === 'undefined') {
 
@@ -51,7 +53,7 @@ Input.prototype.context = function (context) {
  * @param  {String} color Fill color.
  * @return {Object} This.
  */
-Input.prototype.fill = function (color) {
+Pen.prototype.fill = function (color) {
 	var ctx = this.context();
 	ctx.fillStyle = color;
 	return this;
@@ -63,7 +65,7 @@ Input.prototype.fill = function (color) {
  * @param  {Number} width Line width.
  * @return {Object} This.
  */
-Input.prototype.stroke = function (color, width) {
+Pen.prototype.stroke = function (color, width) {
 	var ctx = this.context();
 
 	if (color) {
@@ -84,7 +86,7 @@ Input.prototype.stroke = function (color, width) {
  * @param  {String} type Type of input.
  * @return {Object} This.
  */
-Input.prototype.line = function (from, to, type) {
+Pen.prototype.line = function (from, to, type) {
 	type = type || 'object';
 	var ctx = this.context();
 	ctx.beginPath();
@@ -106,7 +108,7 @@ Input.prototype.line = function (from, to, type) {
  * @param  {String} type Type of input.
  * @return {Object} This.
  */
-Input.prototype.circle = function (pos, size, type) {
+Pen.prototype.circle = function (pos, size, type) {
 	type = type || 'object';
 	var ctx = this.context();
 	ctx.beginPath();
@@ -120,4 +122,15 @@ Input.prototype.circle = function (pos, size, type) {
 	return this;
 };
 
-module.exports = Input;
+/**
+ * Resets options.
+ * @return {Object} This.
+ */
+Pen.prototype.destroy = function () {
+
+	this.options = this._defaultOptions;
+	return this;
+
+};
+
+module.exports = Pen;
