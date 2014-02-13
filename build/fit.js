@@ -4,10 +4,11 @@
 global.FIT = module.exports = {
 	Canvas: require('./src/Canvas'),
 	Input: require('./src/Input'),
-	Pen: require('./src/Pen')
+	Pen: require('./src/Pen'),
+	Frame: require('./src/Frame')
 };
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./src/Canvas":3,"./src/Input":4,"./src/Pen":5}],2:[function(require,module,exports){
+},{"./src/Canvas":3,"./src/Frame":4,"./src/Input":5,"./src/Pen":6}],2:[function(require,module,exports){
 'use strict';
 
 var AbstractModule = function (Class) {
@@ -171,6 +172,127 @@ Canvas.prototype.destroy = function () {
 module.exports = Canvas;
 
 },{"./AbstractClass":2}],4:[function(require,module,exports){
+/*
+ * Frame.js – Part of FIT (Front-end Interactive Toolkit)
+ * Copyright (c) 2014, Danny Garcia. All rights reserved.
+ * Code licensed under the MIT License
+ * https://github.com/dannygarcia/fit/
+ */
+
+'use strict';
+
+var AbstractClass = require('./AbstractClass');
+
+/**
+ * Frame Constructor
+ * @param {Object} userOptions {
+ * }
+ * @return {Function} Frame instance.
+ */
+var Frame = new AbstractClass(function (userOptions) {
+
+	this._setOptions({
+		autoStart: false
+	}, userOptions);
+
+	this.active = this.options.autoStart;
+	this.request = null;
+	this.frame = 0;
+
+	if (this.options.autoStart) {
+		this.start();
+	}
+
+	return this;
+
+});
+
+/**
+ * Frame Step Hook
+ * @param  {Number} frame Frame count.
+ */
+Frame.prototype.step = function (/** frame **/) {};
+
+/**
+ * Start rAF loop.
+ * @return {Object} This.
+ */
+Frame.prototype.start = function () {
+
+	if (!this.active) {
+
+		var self = this,
+			animationLoop = function () {
+				self.request = window.requestAnimationFrame(animationLoop);
+				self.step(self.frame);
+				self.frame++;
+			};
+
+		if (typeof window.requestAnimationFrame === 'undefined') {
+
+			window.requestAnimationFrame = (function () {
+				return  window.requestAnimationFrame       ||
+						window.webkitRequestAnimationFrame ||
+						window.mozRequestAnimationFrame    ||
+						window.oRequestAnimationFrame      ||
+						window.msRequestAnimationFrame     ||
+						function (callback) {
+							window.setTimeout(callback, 1000 / 60);
+						};
+			}());
+
+		}
+
+		if (typeof window.cancelAnimationFrame === 'undefined') {
+
+			window.cancelAnimationFrame = (function () {
+				return  window.cancelAnimationFrame       ||
+						window.webkitCancelAnimationFrame ||
+						window.mozCancelAnimationFrame    ||
+						window.oCancelAnimationFrame      ||
+						window.msCancelAnimationFrame;
+			}());
+
+		}
+
+		animationLoop();
+		this.active = true;
+
+	}
+
+	return this;
+
+};
+
+/**
+ * Stop rAF loop.
+ * @return {Object} This.
+ */
+Frame.prototype.stop = function () {
+
+	if (this.active) {
+		window.cancelAnimationFrame(this.request);
+	}
+
+	return this;
+
+};
+
+/**
+ * Resets options and stops the rAF.
+ * @return {Object} This.
+ */
+Frame.prototype.destroy = function () {
+
+	this.stop();
+	this.options = this._defaultOptions;
+	return this;
+
+};
+
+module.exports = Frame;
+
+},{"./AbstractClass":2}],5:[function(require,module,exports){
 /*
  * Input.js – Part of FIT (Front-end Interactive Toolkit)
  * Copyright (c) 2014, Danny Garcia. All rights reserved.
@@ -437,7 +559,7 @@ Input.prototype.destroy = function () {
 
 module.exports = Input;
 
-},{"./AbstractClass":2}],5:[function(require,module,exports){
+},{"./AbstractClass":2}],6:[function(require,module,exports){
 /*
  * Pen.js – Part of FIT (Front-end Interactive Toolkit)
  * Copyright (c) 2014, Danny Garcia. All rights reserved.
@@ -575,4 +697,4 @@ Pen.prototype.destroy = function () {
 
 module.exports = Pen;
 
-},{"./AbstractClass":2}]},{},[1,2,3,4,5])
+},{"./AbstractClass":2}]},{},[1,2,3,4,5,6])
