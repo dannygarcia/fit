@@ -8,13 +8,7 @@ Currently in development, like, not even alpha.
 
 ## TODO
 
-Port FIL components to FIT:
-
-- [x] Canvas
-- [x] Input
-- [x] Pen
-- [x] Frame
-- [ ] Transformer
+- [ ] Improve primary module functionality.
 
 Support:
 
