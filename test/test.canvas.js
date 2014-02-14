@@ -27,7 +27,9 @@
 		ok(typeof canvas.getContext === 'function', 'getContext is a type of function');
 		ok(typeof ctx === 'object', 'returns a type of object');
 		ok(canvas.getContext('2d') instanceof window.CanvasRenderingContext2D, '2d context matches 2d context instance');
-		ok(new FIT.Canvas({contextType: 'webgl'}).getContext('webgl') instanceof window.WebGLRenderingContext, 'webgl context matches weblg context instance');
+		if (window.WebGLRenderingContext && canvas._canvas.getContext('webgl')) {
+			ok(new FIT.Canvas({contextType: 'webgl'}).getContext('webgl') instanceof window.WebGLRenderingContext, 'webgl context matches webgl context instance');
+		}
 		ok(canvas._context === canvas.getContext(), 'method returns internal context');
 	});
 	test('.resize', function () {
