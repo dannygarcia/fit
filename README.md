@@ -13,7 +13,7 @@ Port FIL components to FIT:
 - [x] Canvas
 - [x] Input
 - [x] Pen
-- [ ] Frame
+- [x] Frame
 - [ ] Transformer
 
 Support:
