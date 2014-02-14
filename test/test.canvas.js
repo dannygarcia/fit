@@ -22,15 +22,22 @@
 	test('instantiation', function () {
 		ok(typeof canvas === 'object', 'returns a type of object');
 	});
-	test('.getContext', function () {
+	test('.getContext 2d', function () {
 		var ctx = canvas.getContext();
 		ok(typeof canvas.getContext === 'function', 'getContext is a type of function');
 		ok(typeof ctx === 'object', 'returns a type of object');
 		ok(canvas.getContext('2d') instanceof window.CanvasRenderingContext2D, '2d context matches 2d context instance');
-		if (window.WebGLRenderingContext && canvas._canvas.getContext('webgl')) {
-			ok(new FIT.Canvas({contextType: 'webgl'}).getContext('webgl') instanceof window.WebGLRenderingContext, 'webgl context matches webgl context instance');
-		}
 		ok(canvas._context === canvas.getContext(), 'method returns internal context');
+	});
+	test('.getContext webgl', function () {
+		var webglCanvas = new FIT.Canvas({contextType: 'webgl'}),
+			webglContext = webglCanvas.getContext('webgl');
+
+		if (window.WebGLRenderingContext && webglContext) {
+			ok(webglContext instanceof window.WebGLRenderingContext, 'webgl context matches webgl context instance');
+		} else {
+			ok(true, 'no webgl rendering context available');
+		}
 	});
 	test('.resize', function () {
 		var width = 10;
