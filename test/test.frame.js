@@ -14,9 +14,7 @@
 	var frame;
 	module('Frame', {
 		setup: function () {
-			frame = new FIT.Frame({
-				autoBindInputs: false
-			});
+			frame = new FIT.Frame();
 		},
 		teardown: function () {
 			frame.destroy();
