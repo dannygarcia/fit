@@ -38,6 +38,8 @@
 		} else {
 			ok(true, 'no webgl rendering context available');
 		}
+
+		webglCanvas.destroy();
 	});
 	test('.resize', function () {
 		var width = 10;
