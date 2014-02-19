@@ -1,5 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function (global){'use strict';
+(function (global){
+'use strict';
 
 require('./src/polyfills/bind');
 
@@ -10,6 +11,7 @@ global.FIT = module.exports = {
 	Frame: require('./src/Frame'),
 	Alter: require('./src/Alter')
 };
+
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./src/Alter":3,"./src/Canvas":4,"./src/Frame":5,"./src/Input":6,"./src/Pen":7,"./src/polyfills/bind":8}],2:[function(require,module,exports){
 'use strict';
@@ -821,7 +823,8 @@ Pen.prototype.destroy = function () {
 module.exports = Pen;
 
 },{"./AbstractClass":2}],8:[function(require,module,exports){
-(function (global){'use strict';
+(function (global){
+'use strict';
 if (!global.Function.prototype.bind) {
 	global.Function.prototype.bind = function (oThis) {
 		if (typeof this !== 'function') {
@@ -843,5 +846,6 @@ if (!global.Function.prototype.bind) {
 		return fBound;
 	};
 }
+
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1,2,3,4,5,6,7])

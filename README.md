@@ -4,7 +4,7 @@ A successor to [FIL](https://github.com/dannygarcia/fil). FIL is old busted, FIT
 
 ## Status
 
-[![Build Status](https://travis-ci.org/dannygarcia/fit.png?branch=develop)](https://travis-ci.org/dannygarcia/fit)
+[![Build Status](https://travis-ci.org/dannygarcia/fit.png?branch=develop)](https://travis-ci.org/dannygarcia/fit) [![Dependencies](https://david-dm.org/dannygarcia/fit.png)](https://david-dm.org/dannygarcia/fit#info=devDependencies&view=table)
 
 Currently in development, like, barely alpha.
 
