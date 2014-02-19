@@ -49,12 +49,20 @@ module.exports = function (grunt) {
 				files: ['./*.js', 'src/*.js', 'test/*.js'],
 				tasks: ['default']
 			}
+		},
+
+		qunit: {
+			files: ['test/runner.html'],
+			options: {
+				force: true
+			}
 		}
 
 	});
 
 	// Default task(s).
+	grunt.registerTask('test', 'qunit');
 	grunt.registerTask('default', ['jshint', 'browserify:dev']);
-	grunt.registerTask('build', ['jshint', 'browserify:dist', 'uglify']);
+	grunt.registerTask('build', ['jshint', 'browserify:dist', 'uglify', 'test']);
 
 };

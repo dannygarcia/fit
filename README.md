@@ -14,7 +14,6 @@ Support:
 
 - [ ] Provide proper exports (AMD, Node, etc.)
 - [ ] Automate Documentation
-- [ ] Write qUnit Tests
 - [ ] Provide use examples.
 
 Future:

@@ -111,7 +111,7 @@ Input.prototype.setCoordinates = function (e) {
 	var c = [],
 		sum = this._makeCoordinate(0, 0);
 
-	if (this._touch) {
+	if (this._touch && e.touches) {
 
 		// For each touch input, generate its coordinates.
 		for (var i = 0; i < e.touches.length; i++) {

@@ -1,5 +1,7 @@
 'use strict';
 
+require('./src/polyfills/bind');
+
 global.FIT = module.exports = {
 	Canvas: require('./src/Canvas'),
 	Input: require('./src/Input'),

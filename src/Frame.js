@@ -96,7 +96,7 @@ Frame.prototype.start = function () {
  */
 Frame.prototype.stop = function () {
 
-	if (this.active) {
+	if (this.active && window.cancelAnimationFrame) {
 		window.cancelAnimationFrame(this.request);
 	}
 
