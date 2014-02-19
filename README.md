@@ -4,19 +4,22 @@ A successor to [FIL](https://github.com/dannygarcia/fil). FIL is old busted, FIT
 
 ## Status
 
-Currently in development, like, not even alpha.
+[![Build Status](https://travis-ci.org/dannygarcia/fit.png?branch=develop)](https://travis-ci.org/dannygarcia/fit)
+
+Currently in development, like, barely alpha.
 
 ## TODO
 
 - [ ] Improve primary module functionality.
 
-Support:
+### Support:
 
 - [ ] Provide proper exports (AMD, Node, etc.)
 - [ ] Automate Documentation
 - [ ] Provide use examples.
 
-Future:
+### Future:
+
 - [ ] Publish on NPM, Bower, etc.
 - [ ] ????
 - [ ] Profit!
