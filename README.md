@@ -1,6 +1,6 @@
 # FIT: Front-end Interactive Tookit
 
-A successor to [FIL](https://github.com/dannygarcia/fil). FIL is weak and senile. FIL is old busted, FIT is new hotness.
+A successor to [FIL](https://github.com/dannygarcia/fil). FIL is old busted, FIT is new hotness.
 
 ## Status
 
